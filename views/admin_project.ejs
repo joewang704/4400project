@@ -1,0 +1,92 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container container-sm">
+    <h2>Add a Project</h2>
+    <br />
+    <form id="form" action="/admin/project" method="post">
+      <input class="form-control" type="text" name="name" required>
+      <label for="name">Project Name</label>
+      <br />
+      <input class="form-control" type="text" name="advisor" required>
+      <label for="advisor">Advisor</label>
+      <br />
+      <input class="form-control" type="email" name="advisor_email" required>
+      <label for="advisor_email">Advisor Email</label>
+      <br />
+      <textarea form="form" class="form-control" type="textbox" name="desc" placeholder="Enter description here..." required></textarea>
+      <label for="desc">Description</label>
+      <br />
+      <select class="half-width form-control" name="category1" required>
+        <option value="" disabled selected>Select a category...</option>
+        <% for(var i=0; i<categories.length; i++) {%>
+          <option value="<%= categories[i] %>"><%= categories[i] %></option>
+        <% } %>
+      </select>
+      <label for="category1">Category</label>
+      <br />
+      <a onClick="addCategory()">Add a category</a>
+      <br />
+      <select class="third-width form-control" name="designation" required>
+        <option value="" disabled selected>Select a designation...</option>
+        <% for(var i=0; i<designations.length; i++) {%>
+          <option value="<%= designations[i] %>"><%= designations[i] %></option>
+        <% } %>
+      </select>
+      <label for="designation">Designation</label>
+      <br />
+      <input class="third-width form-control" type="number" min="0" name="est" required>
+      <label for="est">Estimated Number of Students</label>
+      <br />
+      <select class="third-width form-control" name="major">
+        <option value="">Select a major...</option>
+        <% for(var i=0; i<majors.length; i++) {%>
+          <option value="<%= majors[i] %>"><%= majors[i] %></option>
+        <% } %>
+      </select>
+      <label for="major">Major Requirement</label>
+      <br />
+      <select class="third-width form-control" name="year">
+        <option value="">Select a year...</option>
+        <option value="Freshman">Freshman</option>
+        <option value="Sophomore">Sophomore</option>
+        <option value="Junior">Junior</option>
+        <option value="Senior">Senior</option>
+      </select>
+      <label for="year">Year Requirement</label>
+      <br />
+      <select class="third-width form-control" name="department">
+        <option value="">Select a department...</option>
+        <% for(var i=0; i<departments.length; i++) {%>
+          <option value="<%= departments[i] %>"><%= departments[i] %></option>
+        <% } %>
+      </select>
+      <label for="department">Department Requirement</label>
+      <br />
+      <button type="submit" class="form-control btn-primary">
+        Submit
+      </button>
+    </form>
+    <a href="/admin/home">
+      <span class="icon glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+    </a>
+  </div>
+  <script>
+    var categoryNumber = 1
+
+    function addCategory() {
+      categoryNumber++
+      $('select[name="category1"]')
+        .clone()
+        .attr('name', 'category'+categoryNumber)
+        .insertBefore('label[for="category1"]')
+    }
+  </script>
+</body>
+</html>
+

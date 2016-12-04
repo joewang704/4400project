@@ -1,0 +1,109 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <br />
+    <a href="/me">
+      <button type="button" class="btn btn-primary" aria-label="Me">
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+      </button>
+    </a>
+    <h2>Main Page</h2>
+    <form action="#" method="post">
+      <input class="half-width form-control" type="text" name="title">
+      <label for="username">Title</label>
+      <select class="half-width form-control" name="category1">
+        <option value="">Select a category...</option>
+        <% for(var i=0; i<categories.length; i++) {%>
+          <option value="<%= categories[i] %>"><%= categories[i] %></option>
+        <% } %>
+      </select>
+      <label for="category1">Category</label>
+      <br />
+      <a onClick="addCategory()">Add a category</a>
+      <br />
+      <br />
+      <select class="third-width form-control" name="designation">
+        <option value="">Select a designation...</option>
+        <% for(var i=0; i<designations.length; i++) {%>
+          <option value="<%= designations[i] %>"><%= designations[i] %></option>
+        <% } %>
+      </select>
+      <label for="designation">Designation</label>
+      <select class="third-width form-control" name="major">
+        <option value="">Select a major...</option>
+        <% for(var i=0; i<majors.length; i++) {%>
+          <option value="<%= majors[i] %>"><%= majors[i] %></option>
+        <% } %>
+      </select>
+      <label for="major">Major</label>
+      <select class="third-width form-control" name="year">
+        <option value="">Select a year...</option>
+        <option value="Freshman">Freshman</option>
+        <option value="Sophomore">Sophomore</option>
+        <option value="Junior">Junior</option>
+        <option value="Senior">Senior</option>
+      </select>
+      <label for="year">Year</label>
+      <br />
+      <label class="radio-inline"><input type="radio" name="type" value="Project">Project</label>
+      <label class="radio-inline"><input type="radio" name="type" value="Course">Course</label>
+      <label class="radio-inline"><input type="radio" name="type" value="Both" checked>Both</label>
+      <br />
+      <br />
+      <button type="submit" class="half-width form-control btn-primary">
+          Apply Filter
+      </button>
+    </form>
+    <a href="/home"><button class="half-width form-control btn-default">Reset Filter</button></a>
+    <hr />
+    <table class="table table-bordered table-hover table-striped">
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+      </tr>
+      <% for(var i=0; i<results.length; i++) {%>
+        <tr class="c"><td><%= results[i].Name %></td><td><%= results[i].type %></td></tr>
+      <% } %>
+    </table>
+  </div>
+  <script>
+    $('.c').click(function() {
+      var name = $(this.innerHTML).filter('td:first').text()
+      var type = $(this.innerHTML).filter('td:nth-child(2)').text().toLowerCase()
+      window.location.href = '/' + type + '/' + name
+    })
+
+    $('form').submit(function() {
+      event.preventDefault()
+      $.post('/home', $(this).serialize()).done(function(data) {
+        var rows = data ? data.map(function(row) { return '<tr class="c"><td>'+row.Name+'</td><td>'+row.type+'</tr>' }) : ''
+        var output = '<tr><th>Name</th><th>Type</th></tr>' + rows
+        $('table tbody').html(output)
+
+        $('.c').click(function() {
+          var name = $(this.innerHTML).filter('td:first').text()
+          var type = $(this.innerHTML).filter('td:nth-child(2)').text().toLowerCase()
+          window.location.href = '/' + type + '/' + name
+        })
+      })
+    })
+
+    var categoryNumber = 1
+
+    function addCategory() {
+      categoryNumber++
+      $('select[name="category1"]')
+        .clone()
+        .attr('name', 'category'+categoryNumber)
+        .insertBefore('label[for="category1"]')
+    }
+  </script>
+</body>
+</html>
+

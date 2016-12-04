@@ -1,0 +1,65 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container container-sm">
+    <h2>Applications</h2>
+    <br />
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>Project</th>
+        <th>Applicant Major</th>
+        <th>Applicant Year</th>
+        <th>Status</th>
+      </tr>
+      <% for(var i=0; i<rows.length; i++) {%>
+        <tr>
+          <td><%- rows[i].Project_name %></td>
+          <td><%- rows[i].Major %></td>
+          <td><%- rows[i].Year %></td>
+          <td><%- rows[i].Status %></td>
+          <% if(rows[i].Status === 'Pending') {%>
+            <td><input type="radio" name="app"
+              value="<%= JSON.stringify({project:rows[i].Project_name,student:rows[i].Student_name}) %>"></td>
+          <% } %>
+        </tr>
+      <% } %>
+    </table>
+    <button onClick="changeStatus('Accepted')" class="third-width form-control btn-primary">
+      Accept
+    </button>
+    <br />
+    <button onClick="changeStatus('Rejected')" class="third-width form-control btn-primary">
+      Reject
+    </button>
+    <br />
+    <a href="/admin/home">
+      <span class="icon glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+    </a>
+  </div>
+  <script>
+    var json = null
+    $(document).ready(function() {
+      $('input[name="app"]').click(function() {
+        json = this.value
+      })
+    })
+    function changeStatus(status) {
+      console.log(json)
+      if (json) {
+        var obj = JSON.parse(json)
+        obj.status = status
+        $.post('/admin/app', obj).done(function(data) {
+          location.reload()
+        })
+      }
+    }
+  </script>
+</body>
+</html>
+
+

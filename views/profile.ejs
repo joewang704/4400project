@@ -1,0 +1,65 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container container-sm">
+    <h2>Edit Profile</h2>
+    <br />
+    <form action="/profile" method="post">
+      <select class="half-width form-control" name="major">
+        <option value="" disabled selected><%= user.Major || 'Select a major...' %></option>
+        <% for(var i=0; i<majors.length; i++) {%>
+          <option value="<%= majors[i] %>"><%= majors[i] %></option>
+        <% } %>
+      </select>
+      <label for="major">Major</label>
+      <br />
+      <select class="half-width form-control" name="year">
+        <option value="">Select a year...</option>
+        <option value="Freshman"
+          <% if (user.Year === 'Freshman') { %>
+            selected
+          <% } %>
+        >Freshman</option>
+        <option value="Sophomore"
+          <% if (user.Year === 'Sophomore') { %>
+            selected
+          <% } %>
+        >
+          Sophomore
+        </option>
+        <option value="Junior"
+          <% if (user.Year === 'Junior') { %>
+            selected
+          <% } %>
+        >
+          Junior
+        </option>
+        <option value="Senior"
+          <% if (user.Year === 'Senior') { %>
+            selected
+          <% } %>
+        >
+          Senior
+        </option>
+      </select>
+      <label for="year">Year</label>
+      <br />
+      <input class="form-control" type="text" id="year" disabled value="<%= user.Department %>">
+      <label for="department">Department</label>
+      <br />
+      <button type="submit" class="form-control btn-primary">
+        Save
+      </button>
+    </form>
+    <a href="/me">
+      <span class="icon glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span>
+    </a>
+  </div>
+</body>
+</html>
+
